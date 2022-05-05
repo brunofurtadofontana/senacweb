@@ -1,0 +1,25 @@
+*{
+    margin:0 auto;
+    padding:0 auto;
+}
+.boxLogin{
+    width:35%;
+    height:auto;
+    margin:0 auto;
+    padding:0 auto;
+    margin-top:100px;
+    background-color:#f4f4f4;
+    padding:10px 10px;
+    border-radius:10px;
+}
+.boxCadastro{
+    width:35%;
+    height:auto;
+    margin:0 auto;
+    padding:0 auto;
+    margin-top:100px;
+    background-color:#f4f4f4;
+    padding:10px 10px;
+    border-radius:10px;
+}
+h2{text-align:center;}
