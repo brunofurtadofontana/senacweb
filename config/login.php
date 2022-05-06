@@ -17,4 +17,6 @@ if($rowEmail == 1){
     }else{
         header("Location:../index.php?error=1");
     }
+}else{
+    header("Location:../index.php?error=1");
 }

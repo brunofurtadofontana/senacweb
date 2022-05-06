@@ -24,7 +24,7 @@
                 </div>
                 <div class="mb-3">
                     <label>Senha</label>
-                    <input class="form-control" type="password" name="password"/>
+                    <input class="form-control" type="password" name="senha"/>
                 </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Cadastrar</button>
