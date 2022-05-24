@@ -1,3 +1,13 @@
+<?php
+    include("config/verifica.php");
+    include("config/conexao.php");
+    $email =  $_SESSION['usuario'];
+    $res = mysqli_query($link,"SELECT *from usuarios WHERE email = '$email' ");
+    $show = mysqli_fetch_assoc($res);
+    $id = $show['id_usuario'];
+    $nomeLogado = $show['nome'];
+    
+?>
 <html>
     <head>
         <meta charset="utf-8"/>
@@ -13,8 +23,8 @@
         <div class="conteudo">
             
             <div class="top">
-                <h2 class="titulo">HOME 
-                    <a href="index.php" class="btn btn-danger" style="float:right">SAIR</a>
+                <h2 class="titulo">HOME / Olá <?php  echo $nomeLogado; ?>
+                    <a href="config/logoff.php" class="btn btn-danger" style="float:right">SAIR</a>
                 </h2>
             </div>
             <div class="wh">
@@ -30,9 +40,11 @@
                 </form>
             </div>
             <?php 
-                include("config/conexao.php");
+               
                 $res = mysqli_query($link,"SELECT *from usuarios as u JOIN tweet as t WHERE u.id_usuario = t.id_usuario ORDER BY id_tweet DESC")or die(mysqli_error($link));
                 while($show = mysqli_fetch_assoc($res)){
+                    $idUsuarioTweet = $show['id_usuario'];
+                    $id_tweet = $show['id_tweet'];
                     $msg = $show['tweet'];
                     $nome = $show['nome'];
                     $hr = $show['hora_inclusao'];
@@ -45,7 +57,17 @@
                         <img src="img/avatar.jpg" class="rounded-circle" widht="50" height="50"/>
                         <span class="twt-perfil"><?php echo $nome ?></span>
                         <span class="twt-hr"><?php echo $hr ?></span>
+                        
+                        <?php
+                            if($id == $idUsuarioTweet){      
+                        
+                                echo "<a href='config/delete.php?id_tweet=$id_tweet' ><img src='img/delete.png' width='25' /></a>";
+
+                            }
+                        ?>
+                        
                     </div>
+                    
                     <div class="twt-msg">
                         
                         
@@ -85,13 +107,27 @@
         $msg = $_POST['msg'];
         $data = date("Y-m-d");
         $time = date("H:i:s");
-        if(isset($_FILES['foto'])){
+        
+        if(isset($_FILES['foto']) && $_FILES['foto']['name'] != '0'){
             $ext = strtolower(substr($_FILES['foto']['name'],-4));
             $new_name = date('Y.m.d-h.i.s').$ext;
             $dir = './uploads/';
             move_uploaded_file($_FILES['foto']['tmp_name'], $dir.$new_name);
+            $res = mysqli_query($link,"INSERT INTO tweet(
+                                                        id_tweet,
+                                                        id_usuario,
+                                                        tweet,
+                                                        data_inclusao,
+                                                        hora_inclusao,
+                                                        image_tweet)VALUES(
+                                                                            'NULL',
+                                                                            '$id',
+                                                                            '$msg',
+                                                                            '$data',
+                                                                            '$time',
+                                                                            '$new_name')")or die(mysqli_error($link));
         }
-        $res = mysqli_query($link,"INSERT INTO tweet(
+            $res = mysqli_query($link,"INSERT INTO tweet(
                                                     id_tweet,
                                                     id_usuario,
                                                     tweet,
@@ -99,13 +135,15 @@
                                                     hora_inclusao,
                                                     image_tweet)VALUES(
                                                                         'NULL',
-                                                                        '1',
+                                                                        '$id',
                                                                         '$msg',
                                                                         '$data',
                                                                         '$time',
-                                                                        '$new_name')")or die(mysqli_error($link));
+                                                                 'NULL')")or die(mysqli_error($link));
         if($res){
             echo "<meta HTTP-EQUIV='refresh' CONTENT='0'>";
+           // var_dump($_FILES['foto']);
         }                                                                
     }
+
 ?>
