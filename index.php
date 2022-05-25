@@ -9,6 +9,32 @@
     <container>
         <div class="boxLogin">
             <center><img src="https://imagensemoldes.com.br/wp-content/uploads/2020/03/Foto-Nome-PNG-Twitter.png" width="200" height="200" /></center>
+            <?php
+                error_reporting(0);
+                $erro = $_GET['error'];
+                switch($erro){
+                    case 1:
+                        echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                        <strong>Erro!</strong> Usuário ou senha inválidos!
+                        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                        </div>";
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                        <strong>Erro!</strong> Você precisa estar logado para acessar a página Home.
+                        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                        </div>";
+                        break;
+                    case 4:
+                        echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                        <strong>Ops!</strong> Você foi desconectado!
+                        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                        </div>";
+                        break;
+                }
+            ?>
             <form action="config/login.php" method="post">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email address</label>

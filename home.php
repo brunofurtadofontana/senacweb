@@ -14,6 +14,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="css/home.css" />
+        <link rel="stylesheet" href="dist/css/lightbox.min.css">
+        <script src="dist/js/lightbox-plus-jquery.min.js"></script>
     </head>
     <body>
     <container>
@@ -48,7 +50,8 @@
                     $msg = $show['tweet'];
                     $nome = $show['nome'];
                     $hr = $show['hora_inclusao'];
-                    $imagem = $show['image_tweet']
+                    $imagem = $show['image_tweet'];
+                    $curtidas = $show['curtir'];
             ?>
             
             <div class="tweets">
@@ -75,7 +78,9 @@
                         <br>
                         <?php 
                             if($imagem != 'NULL'){ ?>
-                            <img src="uploads/<?php echo $imagem ?>" width="200" />
+                            <a class="example-image-link" href="uploads/<?php echo $imagem ?>" data-lightbox="example-1">
+                                <img class="example-image" src="uploads/<?php echo $imagem ?>" width="200" />
+                            </a>
                         <?php        
                             }
                         ?>
@@ -89,7 +94,8 @@
                             <img src="img/rt.png" width="22"/>20
                         </div>
                         <div class="twt-like">
-                            <img src="img/like.png" width="22"/>200
+                            <a href="config/like.php?id_tweet=<?php echo $id_tweet ?>"><img src="img/like.png" width="22"/></a>
+                            <?php echo $curtidas ?>
                         </div>
                     </div>
                 </div>
@@ -108,7 +114,7 @@
         $data = date("Y-m-d");
         $time = date("H:i:s");
         
-        if(isset($_FILES['foto']) && $_FILES['foto']['name'] != '0'){
+        if(isset($_FILES['foto']) && $_FILES['foto']['name'] != ''){
             $ext = strtolower(substr($_FILES['foto']['name'],-4));
             $new_name = date('Y.m.d-h.i.s').$ext;
             $dir = './uploads/';
@@ -126,7 +132,7 @@
                                                                             '$data',
                                                                             '$time',
                                                                             '$new_name')")or die(mysqli_error($link));
-        }
+        }else{
             $res = mysqli_query($link,"INSERT INTO tweet(
                                                     id_tweet,
                                                     id_usuario,
@@ -140,6 +146,7 @@
                                                                         '$data',
                                                                         '$time',
                                                                  'NULL')")or die(mysqli_error($link));
+        }
         if($res){
             echo "<meta HTTP-EQUIV='refresh' CONTENT='0'>";
            // var_dump($_FILES['foto']);

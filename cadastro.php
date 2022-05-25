@@ -28,6 +28,7 @@
                 </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    <span>Já possui cadastro? faça o <a href="index.php">Login</a>
                 </div>
             </form>
         </div>

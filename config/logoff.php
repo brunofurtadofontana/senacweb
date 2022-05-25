@@ -2,4 +2,4 @@
 session_start();
 unset($_SESSION['usuario']);
 session_destroy();
-header("Location: ../index.php?erro=4");
+header("Location: ../index.php?error=4");
