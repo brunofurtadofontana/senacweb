@@ -88,7 +88,9 @@
                     </div>
                     <div class="twt-share">
                         <div class="twt-comment">
-                            <img src="img/comment.png" width="22"/>5
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal<?php echo $id_tweet ?>"> 
+                                <img src="img/comment.png" width="22"/>
+                            </a>
                         </div>
                         <div class="twt-rt">
                             <img src="img/rt.png" width="22"/>20
@@ -97,6 +99,56 @@
                             <a href="config/like.php?id_tweet=<?php echo $id_tweet ?>"><img src="img/like.png" width="22"/></a>
                             <?php echo $curtidas ?>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal<?php if($id_tweet == $id_tweet)echo $id_tweet?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Comentar tweet</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="config/comment.php" method="post">
+                            <textarea class="form-control" name="comment" placeholder="Digite aqui o comentario"></textarea>
+                            <input type="hidden" name="idUsuario" value="<?php echo $id ?>" />
+                            <input type="hidden" name="idTweet" value="<?php echo $id_tweet ?>" />
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                <button type="submit" class="btn btn-primary">Comentar</button>
+                            </div>
+                        </form>
+                        <hr>
+                            <?php 
+                                $resComment = mysqli_query($link,"SELECT *from usuarios as u JOIN comentarios as c  WHERE u.id_usuario = c.id_usuario AND c.id_tweet = '$id_tweet' ORDER BY id_comentario DESC");
+                                $count = mysqli_num_rows($resComment);
+                            ?>
+                            <h3>Comentários(<?php echo $count ?>)</h3>
+                        <hr>
+                        <?php
+                            if($count>0){
+                                while($show=mysqli_fetch_assoc($resComment)){
+                                    $comment = $show['mensagem'];
+                                    $dataComment = $show['dataComentario'];
+                                    $horaComment = $show['horaComentario'];
+                                    $nome = $show['nome'];
+                            ?>
+                            <div class="card border-primary mb-3" style="">
+                            <div class="card-header"><?php echo $nome ?> - <?php echo $dataComment ?></div>
+                            <div class="card-body text-primary">
+                                <p class="card-text"><?php echo $comment ?></p>
+                            </div>
+                            </div>
+
+                            <?php 
+                                }                 
+                            }else{
+                                echo "<h3>Esse tweet não possui comentarios!</h3>";
+                            }
+                        ?>
+                    </div>  
                     </div>
                 </div>
             </div>
